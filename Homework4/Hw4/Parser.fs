@@ -25,12 +25,14 @@ let parseOperation (arg : string) =
 let parseCalcArguments(args : string[]) = 
     if (isArgLengthSupported(args) |> not) then
         ArgumentException() |> raise
-        
-    let val1 = try float args[0] with _ -> ArgumentException() |> raise
-    let val2 = try float args[2] with _ -> ArgumentException() |> raise
+    
+    let couldParse1, val1 = Double.TryParse args[0]
+    let couldParse2, val2 = Double.TryParse args[2]
     let oper = parseOperation args[1]
     
-    if (oper = CalculatorOperation.Undefined) then
+    if (oper = CalculatorOperation.Undefined ||
+        not couldParse1 ||
+        not couldParse2) then
         ArgumentException() |> raise
     
     {arg1 = val1; operation = oper; arg2 = val2}
