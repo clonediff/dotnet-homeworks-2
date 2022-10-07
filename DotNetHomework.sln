@@ -29,7 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Homework2", "Homework2", "{
 EndProject
 Project("{F571AB99-FB84-49F4-A0DF-F27AA55F3F3F}") = "Hw2", "Homework2\Hw2\Hw2.ilproj", "{91F15280-A17E-4A33-A838-2B40D5D300C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hw2Tests", "Homework2\Hw2.Tests\Hw2Tests.csproj", "{73139B13-9AC4-4604-9E67-028CDA04A326}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hw2Tests", "Homework2\Hw2.Tests\Hw2.Tests.csproj", "{73139B13-9AC4-4604-9E67-028CDA04A326}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Homework3", "Homework3", "{78F13A34-FDFB-4991-AE29-7EB1298599BD}"
 	ProjectSection(SolutionItems) = preProject
