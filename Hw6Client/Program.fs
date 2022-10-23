@@ -10,17 +10,24 @@ let transfromLineToArgs (input: string) =
     | 1 -> [|args[0]; " "; " "|]
     | 2 -> [|args[0]; args[1]; " "|]
     | _ -> args
+
+[<System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>]
+let parseResponse (response: HttpResponseMessage) = 
+    let responseMsg = response.Content.ReadAsStringAsync() 
+                        |> Async.AwaitTask 
+                        |> Async.RunSynchronously
+    match response.IsSuccessStatusCode with
+    | true -> $"Answer: {responseMsg}"
+    | _ -> $"Bad request: {responseMsg}"
     
 [<System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>]
 let getResponse (uri: Uri) (client: HttpClient) = 
     async{
-        try
-            let! response = client.GetStringAsync(uri) |> Async.AwaitTask
-            // Имитация длительного процесса на сервере
-            let! delay = Task.Delay(500) |> Async.AwaitTask
-            return response
-        with
-        | :? AggregateException as e -> return "Bad request. Can't calculate with this arguments"
+        let! response = client.GetAsync(uri) |> Async.AwaitTask
+        let result = response |> parseResponse 
+        // Имитация длительного процесса на сервере
+        let! delay = Task.Delay(500) |> Async.AwaitTask
+        return result
     }
     
 [<System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>]
