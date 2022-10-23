@@ -1,6 +1,7 @@
 ﻿module Hw5.Parser
 
 open System
+open System.Globalization
 open System.Diagnostics.CodeAnalysis
 open Hw5.Calculator
 open Hw5.MaybeBuilder
@@ -21,7 +22,7 @@ let inline isOperationSupported (arg1, operation, arg2): Result<('a * Calculator
 
 [<ExcludeFromCodeCoverage>]
 let tryParseFloat(str: string): Result<float, Message> =
-    match Double.TryParse str with
+    match Double.TryParse(str, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture) with
     | (true, value) -> Ok value
     | _ -> Error Message.WrongArgFormat
 
