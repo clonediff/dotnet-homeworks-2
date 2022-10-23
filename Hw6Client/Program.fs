@@ -2,6 +2,7 @@
 open System.Net.Http
 open System.Threading.Tasks
 
+[<System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>]
 let transfromLineToArgs (input: string) = 
     let args = input.Split(' ')
     match args.Length with
@@ -9,7 +10,8 @@ let transfromLineToArgs (input: string) =
     | 1 -> [|args[0]; " "; " "|]
     | 2 -> [|args[0]; args[1]; " "|]
     | _ -> args
-
+    
+[<System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>]
 let getResponse (uri: Uri) (client: HttpClient) = 
     async{
         try
@@ -20,7 +22,8 @@ let getResponse (uri: Uri) (client: HttpClient) =
         with
         | :? AggregateException as e -> return "Bad request. Can't calculate with this arguments"
     }
-
+    
+[<System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>]
 [<EntryPoint>]
 let main _ =
     let webClient = new HttpClient()
