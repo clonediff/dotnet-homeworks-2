@@ -64,8 +64,6 @@ public static class HtmlHelperExtensions
             string inputType = "text";
             if (type == typeof(int))
                 inputType = "number";
-            if (type == typeof(bool))
-                inputType = "checkbox";
             strBuilder.AppendLine($"<input id=\"{property.Name}\" type=\"{inputType}\" name=\"{property.Name}\"" + modelValue + "/>");
         }
         return strBuilder.ToString();
