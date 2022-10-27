@@ -26,6 +26,7 @@ public class CalculatorController : Controller
         return Calculate(calculator, arg1, oper, arg2).ToString(CultureInfo.InvariantCulture);
     }
 
+    [ExcludeFromCodeCoverage]
     private double Calculate(ICalculator calculator, double arg1, Operation operation, double arg2)
     {
         return operation switch
