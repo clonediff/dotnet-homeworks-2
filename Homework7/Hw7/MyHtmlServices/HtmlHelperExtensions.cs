@@ -25,24 +25,25 @@ public static class HtmlHelperExtensions
             var inputField = GetInputField(property, model);
             html.AppendHtmlLine(inputField);
 
-            if (model != null)
-            {
-                var errorMessage = ValidateModel(model, property);
+            if (model != null && !TryValidateModel(model, property, out var errorMessage))
                 html.AppendHtmlLine($"<span>{errorMessage}</span>");
-            }
 
             html.AppendHtmlLine("</div>");
         }
         return html;
     }
 
-    private static string ValidateModel(object model, PropertyInfo property)
+    private static bool TryValidateModel(object model, PropertyInfo property, out string errorMessage)
     {
         var validationAttributes = property.GetCustomAttributes<ValidationAttribute>();
         foreach (var curAttr in validationAttributes)
             if (!curAttr.IsValid(property.GetValue(model)))
-                return curAttr.ErrorMessage;
-        return "";
+            {
+                errorMessage = curAttr.ErrorMessage;
+                return false;
+            }
+        errorMessage = string.Empty;
+        return true;
     }
 
     private static string GetInputField(PropertyInfo property, object? model)
@@ -71,9 +72,8 @@ public static class HtmlHelperExtensions
 
     private static string GetDisplay(PropertyInfo property)
     {
-        var attribute =  property
-            .GetCustomAttributes<DisplayAttribute>()
-            .FirstOrDefault();
+        var attribute = property
+            .GetCustomAttribute<DisplayAttribute>();
         if (attribute != null)
             return attribute.Name!;
 
