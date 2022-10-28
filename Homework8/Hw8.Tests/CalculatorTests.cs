@@ -78,4 +78,13 @@ public class CalculatorTests
         //act + assert
         Assert.Throws<InvalidOperationException>(() => { calculator.Divide(1, 0); });
     }
+
+    [Fact]
+    public void InvalidOperation_ThrowsInvalidoperationException()
+    {
+        ICalculator calculator = new Calculator.Calculator();
+
+        //act + assert
+        Assert.Throws<InvalidOperationException>(() => { calculator.Calculate(1, Operation.Invalid, 1); });
+    }
 }
