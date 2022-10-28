@@ -2,6 +2,18 @@
 
 public class Calculator : ICalculator
 {
+    public double Calculate(double val1, Operation oper, double val2)
+    {
+        return oper switch
+        {
+            Operation.Plus => Plus(val1, val2),
+            Operation.Minus => Minus(val1, val2),
+            Operation.Multiply => Multiply(val1, val2),
+            Operation.Divide => Divide(val1, val2),
+            _ => throw new InvalidOperationException()
+        };
+    }
+
     public double Divide(double firstValue, double secondValue)
     {
         if (secondValue == 0)

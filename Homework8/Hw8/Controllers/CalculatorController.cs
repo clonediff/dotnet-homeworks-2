@@ -7,37 +7,23 @@ namespace Hw8.Controllers;
 
 public class CalculatorController : Controller
 {
-    public ActionResult<string> Calculate([FromServices] ICalculator calculator,
+    public ActionResult Calculate([FromServices] ICalculator calculator,
+        [FromServices] IParser parser,
         string val1,
         string operation,
         string val2)
     {
-        var arg1 = Parser.ParseArgument(val1);
-        var arg2 = Parser.ParseArgument(val2);
-        var oper = Parser.ParseOperation(operation);
+        var parserResult = parser.TryParseAllArguments(val1, operation, val2, out var parsed);
 
-        if (double.IsNaN(arg1) || double.IsNaN(arg2))
-            return Messages.InvalidNumberMessage;
-        if (oper == Operation.Invalid)
-            return Messages.InvalidOperationMessage;
-        if (arg2 == 0 && oper == Operation.Divide)
-            return Messages.DivisionByZeroMessage;
-
-        return Calculate(calculator, arg1, oper, arg2).ToString(CultureInfo.InvariantCulture);
-    }
-
-    [ExcludeFromCodeCoverage]
-    private double Calculate(ICalculator calculator, double arg1, Operation operation, double arg2)
-    {
-        return operation switch
+        return parserResult switch
         {
-            Operation.Plus => calculator.Plus(arg1, arg2),
-            Operation.Minus => calculator.Minus(arg1, arg2),
-            Operation.Multiply => calculator.Multiply(arg1, arg2),
-            Operation.Divide => calculator.Divide(arg1, arg2)
+            ParseStatus.InvalidNumber => BadRequest(Messages.InvalidNumberMessage),
+            ParseStatus.InvalidOperation => BadRequest(Messages.InvalidOperationMessage),
+            ParseStatus.DivisionByZero => Ok(Messages.DivisionByZeroMessage),
+            ParseStatus.Success => Ok(calculator.Calculate(parsed.val1, parsed.oper, parsed.val2).ToString(CultureInfo.InvariantCulture))
         };
     }
-    
+
     [ExcludeFromCodeCoverage]
     public IActionResult Index()
     {
