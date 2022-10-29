@@ -7,6 +7,7 @@ namespace Hw8.Controllers;
 
 public class CalculatorController : Controller
 {
+    [ExcludeFromCodeCoverage]
     public ActionResult Calculate([FromServices] ICalculator calculator,
         [FromServices] IParser parser,
         string val1,
