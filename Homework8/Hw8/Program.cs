@@ -13,6 +13,7 @@ public class Program
         builder.Services.AddControllersWithViews();
         builder.Services.AddSingleton<ICalculator, Calculator.Calculator>();
         builder.Services.AddSingleton<IParser, Parser>();
+        builder.Services.AddSingleton<ICalculatorService, CalculatorService>();
 
         var app = builder.Build();
 

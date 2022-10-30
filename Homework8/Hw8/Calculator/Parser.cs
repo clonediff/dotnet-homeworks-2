@@ -15,22 +15,22 @@ public class Parser : IParser
         return result == Operation.Invalid ? false : parsed;
     }
 
-    public ParseStatus TryParseAllArguments(string arg1, string operation, string arg2, 
-        out (double val1, Operation oper, double val2) result)
+    public Result<(double val1, Operation oper, double val2), string> TryParseAllArguments(
+        string arg1, 
+        string operation, 
+        string arg2)
     { 
-        result = default;
-
         if (!TryParseArgument(arg1, out var val1)
             || !TryParseArgument(arg2, out var val2))
-            return ParseStatus.InvalidNumber;
+            return Result<(double val1, Operation oper, double val2), string>.Error(Messages.InvalidNumberMessage);
 
         if (!TryParseOperation(operation, out var oper))
-            return ParseStatus.InvalidOperation;
+            return Result<(double val1, Operation oper, double val2), string>.Error(Messages.InvalidOperationMessage);
 
         if (val2 == 0 && oper == Operation.Divide)
-            return ParseStatus.DivisionByZero;
+            return Result<(double val1, Operation oper, double val2), string>.Error(Messages.DivisionByZeroMessage);
 
-        result = (val1, oper, val2);
-        return ParseStatus.Success;
+        var result = (val1, oper, val2);
+        return Result<(double val1, Operation oper, double val2), string>.Ok(result);
     }
 }

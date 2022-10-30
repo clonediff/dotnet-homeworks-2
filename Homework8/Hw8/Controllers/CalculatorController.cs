@@ -8,21 +8,16 @@ namespace Hw8.Controllers;
 public class CalculatorController : Controller
 {
     [ExcludeFromCodeCoverage]
-    public ActionResult Calculate([FromServices] ICalculator calculator,
-        [FromServices] IParser parser,
+    public ActionResult Calculate(
+        [FromServices] ICalculatorService calculatorService,
         string val1,
         string operation,
         string val2)
     {
-        var parserResult = new CalculatorService().Calculate(calculator, parser, val1, operation, val2, out var result);
-
-        return parserResult switch
-        {
-            ParseStatus.InvalidNumber => BadRequest(Messages.InvalidNumberMessage),
-            ParseStatus.InvalidOperation => BadRequest(Messages.InvalidOperationMessage),
-            ParseStatus.DivisionByZero => Ok(Messages.DivisionByZeroMessage),
-            ParseStatus.Success => Ok(result.ToString(CultureInfo.InvariantCulture))
-        };
+        var result = calculatorService.GetCalculationResult(val1, operation, val2);
+        if (result.IsSuccess)
+            return Ok(result.Value);
+        return BadRequest(result.ErrorValue);
     }
 
     [ExcludeFromCodeCoverage]
