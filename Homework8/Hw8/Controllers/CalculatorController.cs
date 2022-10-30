@@ -14,14 +14,14 @@ public class CalculatorController : Controller
         string operation,
         string val2)
     {
-        var parserResult = parser.TryParseAllArguments(val1, operation, val2, out var parsed);
+        var parserResult = new CalculatorService().Calculate(calculator, parser, val1, operation, val2, out var result);
 
         return parserResult switch
         {
             ParseStatus.InvalidNumber => BadRequest(Messages.InvalidNumberMessage),
             ParseStatus.InvalidOperation => BadRequest(Messages.InvalidOperationMessage),
             ParseStatus.DivisionByZero => Ok(Messages.DivisionByZeroMessage),
-            ParseStatus.Success => Ok(calculator.Calculate(parsed.val1, parsed.oper, parsed.val2).ToString(CultureInfo.InvariantCulture))
+            ParseStatus.Success => Ok(result.ToString(CultureInfo.InvariantCulture))
         };
     }
 
