@@ -17,7 +17,7 @@ public class ResultTests
     public void Ok_OkValue_ReturnsSuccessAndCorrectValue()
     {
         //act
-        var result = Result<int, string>.Ok(OkValue);
+        var result = Result<int>.Ok(OkValue);
 
         //assert
         Assert.True(result.IsSuccess);
@@ -28,10 +28,10 @@ public class ResultTests
     public void Error_ErrorValue_ReturnsSuccess()
     {
         //act
-        var result = Result<int, string>.Error(ErrorValue);
+        var result = Result<int>.Error(ErrorValue);
 
         //assert
         Assert.True(result.IsFailure);
-        Assert.Equal(ErrorValue, result.ErrorValue);
+        Assert.Equal(ErrorValue, result.ErrorText);
     }
 }

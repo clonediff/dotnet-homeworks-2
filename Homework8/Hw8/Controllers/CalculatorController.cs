@@ -7,7 +7,6 @@ namespace Hw8.Controllers;
 
 public class CalculatorController : Controller
 {
-    [ExcludeFromCodeCoverage]
     public ActionResult Calculate(
         [FromServices] ICalculatorService calculatorService,
         string val1,
@@ -17,7 +16,7 @@ public class CalculatorController : Controller
         var result = calculatorService.GetCalculationResult(val1, operation, val2);
         if (result.IsSuccess)
             return Ok(result.Value);
-        return BadRequest(result.ErrorValue);
+        return BadRequest(result.ErrorText);
     }
 
     [ExcludeFromCodeCoverage]

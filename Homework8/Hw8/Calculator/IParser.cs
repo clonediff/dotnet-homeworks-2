@@ -2,6 +2,8 @@
 {
     public interface IParser
     {
-        Result<(double val1, Operation oper, double val2), string> TryParseAllArguments(string arg1, string operation, string arg2);
+        bool TryParseArgument(string value, out double result);
+
+        bool TryParseOperation(string operation, out Operation result);
     }
 }

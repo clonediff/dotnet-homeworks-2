@@ -2,6 +2,6 @@
 {
     public interface ICalculatorService
     {
-        Result<string, string> GetCalculationResult(string val1, string operation, string val2);
+        Result<string> GetCalculationResult(string arg1, string operation, string aeg2);
     }
 }

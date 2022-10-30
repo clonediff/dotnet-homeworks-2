@@ -1,27 +1,27 @@
 ﻿namespace Hw8.Calculator
 {
-    public class Result<T, TError>
+    public class Result<T>
     {
         public bool IsSuccess { get; }
         public bool IsFailure => !IsSuccess;
         public T Value { get; }
-        public TError ErrorValue { get; }
+        public string ErrorText { get; }
 
-        private Result(T value, bool success, TError error)
+        private Result(T value, bool success, string error)
         {
             Value = value;
             IsSuccess = success;
-            ErrorValue = error;
+            ErrorText = error;
         }
 
-        public static Result<T, TError> Ok(T value)
+        public static Result<T> Ok(T value)
         {
-            return new Result<T, TError>(value, true, default(TError));
+            return new Result<T>(value, true, default);
         }
 
-        public static Result<T, TError> Error(TError error)
+        public static Result<T> Error(string error)
         {
-            return new Result<T, TError>(default(T), false, error);
+            return new Result<T>(default(T), false, error);
         }
     }
 }
