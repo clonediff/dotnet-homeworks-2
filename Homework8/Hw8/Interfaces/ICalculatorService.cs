@@ -4,6 +4,6 @@ namespace Hw8.Interfaces
 {
     public interface ICalculatorService
     {
-        Result<string> GetCalculationResult(string arg1, string operation, string aeg2);
+        Result<double> GetCalculationResult(string arg1, string operation, string arg2);
     }
 }

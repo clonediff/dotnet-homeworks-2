@@ -18,22 +18,22 @@ namespace Hw8.Services
             _parser = parser;
         }
 
-        public Result<string> GetCalculationResult(string arg1,
+        public Result<double> GetCalculationResult(string arg1,
             string operation,
             string arg2)
         {
             if (!_parser.TryParseArgument(arg1, out var val1)
             || !_parser.TryParseArgument(arg2, out var val2))
-                return Result<string>.Error(Messages.InvalidNumberMessage);
+                return Result<double>.Error(Messages.InvalidNumberMessage);
 
             if (!_parser.TryParseOperation(operation, out var oper))
-                return Result<string>.Error(Messages.InvalidOperationMessage);
+                return Result<double>.Error(Messages.InvalidOperationMessage);
 
             if (val2 == 0 && oper == Operation.Divide)
-                return Result<string>.Error(Messages.DivisionByZeroMessage);
+                return Result<double>.Error(Messages.DivisionByZeroMessage);
 
             var result = _calculator.Calculate(val1, oper, val2);
-            return Result<string>.Ok(result.ToString(CultureInfo.InvariantCulture));
+            return Result<double>.Ok(result);
         }
     }
 }
