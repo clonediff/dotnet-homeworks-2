@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using Hw8.Calculator;
+using Hw8.Interfaces;
 using Xunit;
 
 namespace Hw8.Tests;

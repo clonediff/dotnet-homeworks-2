@@ -1,4 +1,6 @@
-﻿namespace Hw8.Calculator
+﻿using Hw8.Calculator;
+
+namespace Hw8.Interfaces
 {
     public interface ICalculatorService
     {

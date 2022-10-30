@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Hw8.Calculator;
+using Hw8.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Reflection.Metadata;
 
-namespace Hw8.Calculator
+namespace Hw8.Services
 {
     public class CalculatorService : ICalculatorService
     {
         private readonly ICalculator _calculator;
         private readonly IParser _parser;
 
-        public CalculatorService(ICalculator calculator, 
+        public CalculatorService(ICalculator calculator,
             IParser parser)
         {
             _calculator = calculator;
@@ -29,7 +31,6 @@ namespace Hw8.Calculator
 
             if (val2 == 0 && oper == Operation.Divide)
                 return Result<string>.Error(Messages.DivisionByZeroMessage);
-
 
             var result = _calculator.Calculate(val1, oper, val2);
             return Result<string>.Ok(result.ToString(CultureInfo.InvariantCulture));
