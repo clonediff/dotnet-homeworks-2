@@ -18,8 +18,8 @@ namespace Hw9.Services.MathCalculator
 
         public async Task<CalculationMathExpressionResultDto> CalculateAsync(Expression expression)
         {
-            var executeBefore = await Task.Run(()
-                => new CalculatorExpressionVisitor(expression).GetExecuteBeforeDict());
+            var executeBefore = await new CalculatorExpressionVisitor(expression)
+                .GetExecuteBeforeDictAsync();
             var lazy = new Dictionary<Expression, Lazy<Task<CalculationMathExpressionResultDto>>>();
             var mainExpression = expression;
 
@@ -62,7 +62,7 @@ namespace Hw9.Services.MathCalculator
 
             public CalculatorExpressionVisitor(Expression root) => this.root = root;
 
-            public void Visit(Expression expression)
+            public async Task VisitAsync(Expression expression)
             {
                 if (executeBefore.ContainsKey(expression))
                     return;
@@ -70,9 +70,10 @@ namespace Hw9.Services.MathCalculator
                 Expression[] toExecute;
                 if (expression is BinaryExpression binary)
                 {
+                    await Task.Delay(1);
                     toExecute = new[] { binary.Left, binary.Right };
-                    Visit(binary.Left);
-                    Visit(binary.Right);
+                    await Task.Run(() => VisitAsync(binary.Left));
+                    await Task.Run(() => VisitAsync(binary.Right));
                 }
                 else // иначе ConstantExpression
                     toExecute = Array.Empty<Expression>();
@@ -80,9 +81,9 @@ namespace Hw9.Services.MathCalculator
                 executeBefore[expression] = toExecute;
             }
 
-            public Dictionary<Expression, Expression[]> GetExecuteBeforeDict()
+            public async Task<Dictionary<Expression, Expression[]>> GetExecuteBeforeDictAsync()
             {
-                Visit(root);
+                await VisitAsync(root);
 
                 return executeBefore;
             }
