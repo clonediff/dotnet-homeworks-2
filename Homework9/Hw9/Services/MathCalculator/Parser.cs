@@ -64,7 +64,12 @@ namespace Hw9.Services.MathCalculator
 
                 var curToken = tokens[i];
                 if (prevIsNegative)
-                    curToken = "-" + tokens[i];
+                {
+                    if (!TryParseDouble(curToken, out var _))
+                        resultTokens.Add(new Token { Type = TokenType.Operation, Value = "-"});
+                    else
+                        curToken = "-" + tokens[i];
+                }
                 else if (Regex.Match(tokens[i], @"\(-[0-9\.]+\)").Success)
                     curToken = tokens[i].Substring(1, tokens[i].Length - 2);
 
