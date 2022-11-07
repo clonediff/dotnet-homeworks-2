@@ -34,6 +34,7 @@ namespace Hw9.Services.MathCalculator
 
                     if (root is BinaryExpression be)
                     {
+                        await Task.Delay(1000);
                         var left = await lazy[be.Left].Value;
                         var right = await lazy[be.Right].Value;
                         if (!left.IsSuccess)
@@ -70,7 +71,6 @@ namespace Hw9.Services.MathCalculator
                 Expression[] toExecute;
                 if (expression is BinaryExpression binary)
                 {
-                    await Task.Delay(1000);
                     toExecute = new[] { binary.Left, binary.Right };
                     await Task.Run(() => VisitAsync(binary.Left));
                     await Task.Run(() => VisitAsync(binary.Right));
