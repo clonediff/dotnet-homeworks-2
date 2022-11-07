@@ -13,4 +13,6 @@ public class CalculationMathExpressionResultDto : ResultDto<double>
         : base(true, value, default)
     {
     }
+
+    public CalculationMathExpressionResultDto() { }
 }
