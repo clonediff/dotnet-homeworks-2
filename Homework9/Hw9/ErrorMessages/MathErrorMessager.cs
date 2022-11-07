@@ -2,7 +2,7 @@ namespace Hw9.ErrorMessages;
 
 public static class MathErrorMessager
 {
-    public const string DivisionByZero = "Division by zero";                                                    // TODO: Calculation
+    public const string DivisionByZero = "Division by zero";                                                    // Calculation
     public const string EmptyString =  "Empty string";                                                          // ParseExpression
     public const string IncorrectBracketsNumber = "The number of closing and opening brackets does not match";  // CreateExpression
     public const string StartingWithOperation =  "An expression cannot start with an operation sign";           // GetTokens

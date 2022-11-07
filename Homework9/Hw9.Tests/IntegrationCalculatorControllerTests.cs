@@ -22,8 +22,10 @@ public class IntegrationCalculatorControllerTests : IClassFixture<WebApplication
 	[InlineData("(10 - 3) * 2", "14")]
 	[InlineData("3 - 4 / 2", "1")]
 	[InlineData("8 * (2 + 2) - 3 * 4", "20")]
-	[InlineData("10 - 3 * (-4)", "22")]
-	public async Task Calculate_CalculateExpression_Success(string expression, string result)
+    [InlineData("8 * (-2 + 2) - 3 * 4", "-12")]
+    [InlineData("10 - 3 * (-4)", "22")]
+    [InlineData("-10 - 3 * (-4)", "12")]
+    public async Task Calculate_CalculateExpression_Success(string expression, string result)
 	{
 		var response = await CalculateAsync(expression);
 		Assert.True(response!.IsSuccess);
@@ -39,15 +41,17 @@ public class IntegrationCalculatorControllerTests : IClassFixture<WebApplication
 	[InlineData("2 - 2.23.1 - 23", $"{MathErrorMessager.NotNumber} 2.23.1")]
 	[InlineData("8 - / 2", $"{MathErrorMessager.TwoOperationInRow} - and /")]
 	[InlineData("8 + (34 - + 2)", $"{MathErrorMessager.TwoOperationInRow} - and +")]
-	[InlineData("4 - 10 * (/10 + 2)", $"{MathErrorMessager.InvalidOperatorAfterParenthesis} (/")]
+    [InlineData("8 + (34 - 55 54)", $"{MathErrorMessager.TwoNumberInRow} 55 and 54")]
+    [InlineData("4 - 10 * (/10 + 2)", $"{MathErrorMessager.InvalidOperatorAfterParenthesis} (/")]
 	[InlineData("10 - 2 * (10 - 1 /)", $"{MathErrorMessager.OperationBeforeParenthesis} /)")]
 	[InlineData("* 10 + 2", MathErrorMessager.StartingWithOperation)]
+    [InlineData("-(5 + 4)", MathErrorMessager.StartingWithOperation)]
 	[InlineData("10 + 2 -", MathErrorMessager.EndingWithOperation)]
 	[InlineData("((10 + 2)", MathErrorMessager.IncorrectBracketsNumber)]
 	[InlineData("(10 - 2))", MathErrorMessager.IncorrectBracketsNumber)]
 	[InlineData("10 / 0", MathErrorMessager.DivisionByZero)]
 	[InlineData("10 / (1 - 1)", MathErrorMessager.DivisionByZero)]
-	public async Task Calculate_CalculateExpression_Error(string expression, string result)
+    public async Task Calculate_CalculateExpression_Error(string expression, string result)
 	{
 		var response = await CalculateAsync(expression);
 		Assert.False(response!.IsSuccess);

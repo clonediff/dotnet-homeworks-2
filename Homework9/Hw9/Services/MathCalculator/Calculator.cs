@@ -37,10 +37,6 @@ namespace Hw9.Services.MathCalculator
                         await Task.Delay(1000);
                         var left = await lazy[be.Left].Value;
                         var right = await lazy[be.Right].Value;
-                        if (!left.IsSuccess)
-                            return left;
-                        if (!right.IsSuccess)
-                            return right;
                         if (right.Result == 0 && be.NodeType == ExpressionType.Divide)
                             return new CalculationMathExpressionResultDto(MathErrorMessager.DivisionByZero);
                         var value = operationsInfo[be.NodeType](left.Result, right.Result);
