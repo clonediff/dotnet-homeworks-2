@@ -19,9 +19,6 @@ public class MathCalculatorService : IMathCalculatorService
 
     public async Task<CalculationMathExpressionResultDto> CalculateMathExpressionAsync(string? expression)
     {
-        // Для имитации длительного процесса
-        await Task.Delay(1000);
-
         var parsedExpression = await Task.Run(() => parser.ParseExpression(expression));
         if (!parsedExpression.IsSuccess)
             return new CalculationMathExpressionResultDto(parsedExpression.ErrorMessage);
