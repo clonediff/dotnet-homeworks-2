@@ -1,5 +1,7 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{ACFCEFF7-8C3B-4D05-8080-DD19A6E07873}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
@@ -7,20 +9,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{ACFCEFF7-8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "actions", "actions", "{82BA388F-4AE2-43A2-965A-AC2092BF26F3}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
-		.github\workflows\test-reporter.yml = .github\workflows\test-reporter.yml
-		.github\workflows\Plagiarism_detector.yml = .github\workflows\Plagiarism_detector.yml
 		.github\coverlet.runsettings = .github\coverlet.runsettings
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+		.github\workflows\Plagiarism_detector.yml = .github\workflows\Plagiarism_detector.yml
+		.github\workflows\test-reporter.yml = .github\workflows\test-reporter.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hw9", "Homework9\Hw9\Hw9.csproj", "{6F73518F-572E-463B-93D5-1967E7499F03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hw9", "Homework9\Hw9\Hw9.csproj", "{6F73518F-572E-463B-93D5-1967E7499F03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hw9.Tests", "Homework9\Hw9.Tests\Hw9.Tests.csproj", "{1DAA9928-7ABE-40A1-96AF-D73832851F78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hw9.Tests", "Homework9\Hw9.Tests\Hw9.Tests.csproj", "{1DAA9928-7ABE-40A1-96AF-D73832851F78}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Homework9", "Homework9", "{1A83D493-25C0-4C9C-A458-EC3694BE9F2F}"
 	ProjectSection(SolutionItems) = preProject
 		Homework9\README.md = Homework9\README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hw9.Client", "Homework9\Hw9.Client\Hw9.Client\Hw9.Client.csproj", "{6C5CA1A1-F4CE-4170-91CC-3004A65814E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,9 +40,20 @@ Global
 		{1DAA9928-7ABE-40A1-96AF-D73832851F78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DAA9928-7ABE-40A1-96AF-D73832851F78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DAA9928-7ABE-40A1-96AF-D73832851F78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C5CA1A1-F4CE-4170-91CC-3004A65814E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C5CA1A1-F4CE-4170-91CC-3004A65814E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C5CA1A1-F4CE-4170-91CC-3004A65814E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C5CA1A1-F4CE-4170-91CC-3004A65814E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6F73518F-572E-463B-93D5-1967E7499F03} = {1A83D493-25C0-4C9C-A458-EC3694BE9F2F}
 		{1DAA9928-7ABE-40A1-96AF-D73832851F78} = {1A83D493-25C0-4C9C-A458-EC3694BE9F2F}
+		{6C5CA1A1-F4CE-4170-91CC-3004A65814E1} = {1A83D493-25C0-4C9C-A458-EC3694BE9F2F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DE87A648-67FF-4F5A-8CDB-EACACF6EE7F6}
 	EndGlobalSection
 EndGlobal

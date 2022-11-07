@@ -6,7 +6,11 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMathCalculator(this IServiceCollection services)
     {
+        services
+            .AddSingleton<IMathCalculatorService, MathCalculatorService>();
+        services
+            .AddSingleton<IParser, Parser>();
         return services
-            .AddTransient<IMathCalculatorService, MathCalculatorService>();
+            .AddSingleton<ICalculator, Calculator>();
     }
 }

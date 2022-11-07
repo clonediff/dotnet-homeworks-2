@@ -9,7 +9,7 @@ namespace Hw9.Controllers
     {
         private readonly IMathCalculatorService _mathCalculatorService;
 
-        public CalculatorController(IMathCalculatorService mathCalculatorService)
+        public CalculatorController([FromServices]IMathCalculatorService mathCalculatorService)
         {
             _mathCalculatorService = mathCalculatorService;
         }
