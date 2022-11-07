@@ -70,7 +70,7 @@ namespace Hw9.Services.MathCalculator
                 Expression[] toExecute;
                 if (expression is BinaryExpression binary)
                 {
-                    await Task.Delay(1);
+                    await Task.Delay(1000);
                     toExecute = new[] { binary.Left, binary.Right };
                     await Task.Run(() => VisitAsync(binary.Left));
                     await Task.Run(() => VisitAsync(binary.Right));
