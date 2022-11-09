@@ -1,4 +1,4 @@
-﻿namespace Hw9.Dto
+﻿namespace Hw9.Services.MathCalculator
 {
     public enum TokenType
     {

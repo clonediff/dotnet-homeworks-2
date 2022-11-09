@@ -61,9 +61,6 @@ namespace Hw9.Services.MathCalculator
 
             public async Task VisitAsync(Expression expression)
             {
-                if (executeBefore.ContainsKey(expression))
-                    return;
-
                 Expression[] toExecute;
                 if (expression is BinaryExpression binary)
                 {

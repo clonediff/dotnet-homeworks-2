@@ -19,7 +19,7 @@ public class MathCalculatorService : IMathCalculatorService
 
     public async Task<CalculationMathExpressionResultDto> CalculateMathExpressionAsync(string? expression)
     {
-        var parsedExpression = await Task.Run(() => parser.ParseExpression(expression));
+        var parsedExpression = parser.ParseExpression(expression);s
         if (!parsedExpression.IsSuccess)
             return new CalculationMathExpressionResultDto(parsedExpression.ErrorMessage);
 

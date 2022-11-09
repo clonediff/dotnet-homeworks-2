@@ -1,5 +1,6 @@
 ﻿using Hw9.Dto;
 using Hw9.ErrorMessages;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection.Metadata;
@@ -49,6 +50,7 @@ namespace Hw9.Services.MathCalculator
             return stack.Count == 0;
         }
 
+        [ExcludeFromCodeCoverage]
         private ResultDto<List<Token>> GetTokens(string expression)
         {
             var tokens = Regex.Matches(expression, tokenizerRegex).Select(x => x.Value.Replace(" ", "")).ToArray();
