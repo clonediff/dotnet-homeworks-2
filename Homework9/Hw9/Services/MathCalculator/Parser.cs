@@ -3,8 +3,6 @@ using Hw9.ErrorMessages;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq.Expressions;
-using System.Reflection.Metadata;
-using System.Text.RegularExpressions;
 
 namespace Hw9.Services.MathCalculator
 {
@@ -58,6 +56,7 @@ namespace Hw9.Services.MathCalculator
             return stack.Count == 0;
         }
 
+        [ExcludeFromCodeCoverage]
         bool CheckTokens(List<Token> tokens, out string errorMessage)
         {
             errorMessage = default!;
