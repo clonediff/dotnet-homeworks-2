@@ -5,6 +5,6 @@ namespace Hw9.Services.MathCalculator
 {
     public interface IParser
     {
-        public ResultDto<Expression> ParseExpression(string? expression);
+        public ParserResult ParseExpression(string? expression);
     }
 }

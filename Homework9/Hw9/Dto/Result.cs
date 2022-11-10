@@ -14,10 +14,5 @@
         }
 
         protected ResultDto() { }
-
-        public static ResultDto<T> Ok(T value) 
-            => new ResultDto<T>(true, value, default);
-        public static ResultDto<T> Error(string errorMsg) 
-            => new ResultDto<T>(false, default, errorMsg);
     }
 }

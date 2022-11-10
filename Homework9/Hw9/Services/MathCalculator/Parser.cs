@@ -10,7 +10,13 @@ namespace Hw9.Services.MathCalculator
 {
     public class Parser : IParser
     {
-        const string tokenizerRegex = @"\s*(\(\s*\-\s*[0-9\.]+\s*\)|[0-9\.]+|\S)\s*";
+        ITokenizer tokenizer;
+
+        public Parser(ITokenizer tokenizer)
+        {
+            this.tokenizer = tokenizer;
+        }
+
         readonly static Dictionary<string, (int priority, Func<Expression, Expression, Expression> expression)> operationInfo = new()
         {
             ["+"] = (1, Expression.Add),
@@ -19,13 +25,15 @@ namespace Hw9.Services.MathCalculator
             ["/"] = (2, Expression.Divide)
         };
 
-        public ResultDto<Expression> ParseExpression(string? expression)
+        public ParserResult ParseExpression(string? expression)
         {
             if (string.IsNullOrEmpty(expression))
-                return ResultDto<Expression>.Error(MathErrorMessager.EmptyString);
-            var tokens = GetTokens(expression);
+                return new ParserResult(MathErrorMessager.EmptyString);
+            var tokens = tokenizer.GetTokens(expression);
             if (!tokens.IsSuccess)
-                return ResultDto<Expression>.Error(tokens.ErrorMessage);
+                return new ParserResult(tokens.ErrorMessage);
+            if (!CheckTokens(tokens.Result, out var message))
+                return new ParserResult(message);
 
             return CreateExpression(tokens.Result);
         }
@@ -50,73 +58,55 @@ namespace Hw9.Services.MathCalculator
             return stack.Count == 0;
         }
 
-        [ExcludeFromCodeCoverage]
-        private ResultDto<List<Token>> GetTokens(string expression)
+        bool CheckTokens(List<Token> tokens, out string errorMessage)
         {
-            var tokens = Regex.Matches(expression, tokenizerRegex).Select(x => x.Value.Replace(" ", "")).ToArray();
-            var resultTokens = new List<Token>();
-            bool prevIsNegative = false;
-            for (int i = 0; i < tokens.Length; i++)
+            errorMessage = default!;
+
+            if (tokens.Count > 0 && tokens[0].Type == TokenType.Operation)
             {
-                if ((i == 0 || tokens[i - 1] == "(") && tokens[i] == "-")
-                {
-                    prevIsNegative = true;
-                    continue;
-                }
-
-                var curToken = tokens[i];
-                if (prevIsNegative)
-                {
-                    if (!TryParseDouble(curToken, out var _))
-                        resultTokens.Add(new Token { Type = TokenType.Operation, Value = "-"});
-                    else
-                        curToken = "-" + tokens[i];
-                }
-                else if (Regex.Match(tokens[i], @"\(-[0-9\.]+\)").Success)
-                    curToken = tokens[i].Substring(1, tokens[i].Length - 2);
-
-                TokenType tokenType = default;
-                if (curToken == "(" ||
-                    curToken == ")")
-                {
-                    if (resultTokens.Count > 0 && curToken == ")" && resultTokens[^1].Type == TokenType.Operation)
-                        return ResultDto<List<Token>>.Error(MathErrorMessager.OperationBeforeParenthesisMessage(resultTokens[^1].Value));
-                    tokenType = TokenType.Paranthesis;
-                }
-                else if (curToken == "+" ||
-                        curToken == "-" ||
-                        curToken == "*" ||
-                        curToken == "/")
-                {
-                    if (resultTokens.Count > 0 && resultTokens[^1].Value == "(")
-                        return ResultDto<List<Token>>.Error(MathErrorMessager.InvalidOperatorAfterParenthesisMessage(curToken));
-                    if (resultTokens.Count > 0 && resultTokens[^1].Type == TokenType.Operation)
-                        return ResultDto<List<Token>>.Error(MathErrorMessager.TwoOperationInRowMessage(resultTokens[^1].Value, curToken));
-                    tokenType = TokenType.Operation;
-                }
-                else if (Regex.Match(curToken, @"-?[0-9\.]+").Success)
-                {
-                    if (!TryParseDouble(curToken, out var _))
-                        return ResultDto<List<Token>>.Error(MathErrorMessager.NotNumberMessage(curToken));
-                    if (resultTokens.Count > 0 && resultTokens[^1].Type == TokenType.Number)
-                        return ResultDto<List<Token>>.Error(MathErrorMessager.TwoNumberInRowMessage(resultTokens[^1].Value, curToken));
-                    tokenType = TokenType.Number;
-                }
-                else
-                    return ResultDto<List<Token>>.Error(MathErrorMessager.UnknownCharacterMessage(curToken[0]));
-
-                resultTokens.Add(new Token { Type = tokenType, Value = curToken });
-                prevIsNegative = false;
+                errorMessage = MathErrorMessager.StartingWithOperation;
+                return false;
+            }
+            if (tokens.Count > 0 && tokens[^1].Type == TokenType.Operation)
+            {
+                errorMessage = MathErrorMessager.EndingWithOperation;
+                return false;
+            }
+            if (!CheckParanthesis(tokens))
+            {
+                errorMessage = MathErrorMessager.IncorrectBracketsNumber;
+                return false;
             }
 
-            if (resultTokens.Count > 0 && resultTokens[0].Type == TokenType.Operation)
-                return ResultDto<List<Token>>.Error(MathErrorMessager.StartingWithOperation);
-            if (resultTokens.Count > 0 && resultTokens[^1].Type == TokenType.Operation)
-                return ResultDto<List<Token>>.Error(MathErrorMessager.EndingWithOperation);
-            if (!CheckParanthesis(resultTokens))
-                return ResultDto<List<Token>>.Error(MathErrorMessager.IncorrectBracketsNumber);
-
-            return ResultDto<List<Token>>.Ok(resultTokens);
+            for (int i = 0; i < tokens.Count; i++)
+            {
+                if (tokens[i].Type == TokenType.Number && !TryParseDouble(tokens[i].Value, out var _))
+                {
+                    errorMessage = MathErrorMessager.NotNumberMessage(tokens[i].Value);
+                    return false;
+                }
+                if (i > 0 && tokens[i].Value == ")" && tokens[i - 1].Type == TokenType.Operation)
+                {
+                    errorMessage = MathErrorMessager.OperationBeforeParenthesisMessage(tokens[i - 1].Value);
+                    return false;
+                }
+                if (i > 0 && tokens[i - 1].Value == "(" && tokens[i].Type == TokenType.Operation)
+                {
+                    errorMessage = MathErrorMessager.InvalidOperatorAfterParenthesisMessage(tokens[i].Value);
+                    return false;
+                }
+                if (i > 0 && tokens[i - 1].Type == TokenType.Operation && tokens[i].Type == TokenType.Operation)
+                {
+                    errorMessage = MathErrorMessager.TwoOperationInRowMessage(tokens[i - 1].Value, tokens[i].Value);
+                    return false;
+                }
+                if (i > 0 && tokens[i - 1].Type == TokenType.Number && tokens[i].Type == TokenType.Number)
+                {
+                    errorMessage = MathErrorMessager.TwoNumberInRowMessage(tokens[i - 1].Value, tokens[i].Value);
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void SetLastOperation(Stack<Expression> expressionsStack, Stack<string> operationsStack)
@@ -128,7 +118,7 @@ namespace Hw9.Services.MathCalculator
             expressionsStack.Push(mergedExpr);
         }
 
-        private ResultDto<Expression> CreateExpression(List<Token> tokens)
+        private ParserResult CreateExpression(List<Token> tokens)
         {
             var expressionsStack = new Stack<Expression>();
             var operationsStack = new Stack<string>();
@@ -163,7 +153,7 @@ namespace Hw9.Services.MathCalculator
             while (operationsStack.Count != 0)
                 SetLastOperation(expressionsStack, operationsStack);
 
-            return ResultDto<Expression>.Ok(expressionsStack.Pop());
+            return new ParserResult(expressionsStack.Pop());
         }
     }
 }

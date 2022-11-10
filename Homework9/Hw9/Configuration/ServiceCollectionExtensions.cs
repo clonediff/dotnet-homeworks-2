@@ -10,6 +10,8 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IMathCalculatorService, MathCalculatorService>();
         services
             .AddSingleton<IParser, Parser>();
+        services
+            .AddSingleton<ITokenizer, Tokenizer>();
         return services
             .AddSingleton<ICalculator, Calculator>();
     }
