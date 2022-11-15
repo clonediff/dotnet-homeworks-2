@@ -32,25 +32,27 @@ public class IntegrationCalculatorControllerTests : IClassFixture<TestApplicatio
 		Assert.True(response!.IsSuccess);
 		Assert.Equal(result, response.Result.ToString(CultureInfo.InvariantCulture));
 	}
-	
-	[Theory]
-	[InlineData(null, MathErrorMessager.EmptyString)]
-	[InlineData("", MathErrorMessager.EmptyString)]
-	[InlineData("10 + i", $"{MathErrorMessager.UnknownCharacter} i")]
-	[InlineData("10 : 2", $"{MathErrorMessager.UnknownCharacter} :")]
-	[InlineData("3 - 4 / 2.2.3", $"{MathErrorMessager.NotNumber} 2.2.3")]
-	[InlineData("2 - 2.23.1 - 23", $"{MathErrorMessager.NotNumber} 2.23.1")]
-	[InlineData("8 - / 2", $"{MathErrorMessager.TwoOperationInRow} - and /")]
-	[InlineData("8 + (34 - + 2)", $"{MathErrorMessager.TwoOperationInRow} - and +")]
-	[InlineData("4 - 10 * (/10 + 2)", $"{MathErrorMessager.InvalidOperatorAfterParenthesis} (/")]
-	[InlineData("10 - 2 * (10 - 1 /)", $"{MathErrorMessager.OperationBeforeParenthesis} /)")]
-	[InlineData("* 10 + 2", MathErrorMessager.StartingWithOperation)]
-	[InlineData("10 + 2 -", MathErrorMessager.EndingWithOperation)]
-	[InlineData("((10 + 2)", MathErrorMessager.IncorrectBracketsNumber)]
-	[InlineData("(10 - 2))", MathErrorMessager.IncorrectBracketsNumber)]
-	[InlineData("10 / 0", MathErrorMessager.DivisionByZero)]
-	[InlineData("10 / (1 - 1)", MathErrorMessager.DivisionByZero)]
-	public async Task Calculate_CalculateExpression_Error(string expression, string result)
+
+    [Theory]
+    [InlineData(null, MathErrorMessager.EmptyString)]
+    [InlineData("", MathErrorMessager.EmptyString)]
+    [InlineData("10 + i", $"{MathErrorMessager.UnknownCharacter} i")]
+    [InlineData("10 : 2", $"{MathErrorMessager.UnknownCharacter} :")]
+    [InlineData("3 - 4 / 2.2.3", $"{MathErrorMessager.NotNumber} 2.2.3")]
+    [InlineData("2 - 2.23.1 - 23", $"{MathErrorMessager.NotNumber} 2.23.1")]
+    [InlineData("8 - / 2", $"{MathErrorMessager.TwoOperationInRow} - and /")]
+    [InlineData("8 + (34 - + 2)", $"{MathErrorMessager.TwoOperationInRow} - and +")]
+    [InlineData("8 + (34 - 55 54)", $"{MathErrorMessager.TwoNumberInRow} 55 and 54")]
+    [InlineData("4 - 10 * (/10 + 2)", $"{MathErrorMessager.InvalidOperatorAfterParenthesis} (/")]
+    [InlineData("10 - 2 * (10 - 1 /)", $"{MathErrorMessager.OperationBeforeParenthesis} /)")]
+    [InlineData("* 10 + 2", MathErrorMessager.StartingWithOperation)]
+    [InlineData("-(5 + 4)", MathErrorMessager.StartingWithOperation)]
+    [InlineData("10 + 2 -", MathErrorMessager.EndingWithOperation)]
+    [InlineData("((10 + 2)", MathErrorMessager.IncorrectBracketsNumber)]
+    [InlineData("(10 - 2))", MathErrorMessager.IncorrectBracketsNumber)]
+    [InlineData("10 / 0", MathErrorMessager.DivisionByZero)]
+    [InlineData("10 / (1 - 1)", MathErrorMessager.DivisionByZero)]
+    public async Task Calculate_CalculateExpression_Error(string expression, string result)
 	{
 		var response = await CalculateAsync(expression);
 		Assert.False(response!.IsSuccess);
