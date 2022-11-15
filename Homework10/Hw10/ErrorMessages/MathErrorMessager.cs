@@ -10,6 +10,7 @@ public static class MathErrorMessager
     public const string NotNumber =  "There is no such number";
     public const string UnknownCharacter =  "Unknown character";
     public const string TwoOperationInRow = "There are two operations in a row";
+    public const string TwoNumberInRow = "There are two numbers in a row";
     public const string InvalidOperatorAfterParenthesis = "After the opening brackets, only negation can go";
     public const string OperationBeforeParenthesis = "There is only a number before the closing parenthesis";
 
@@ -21,6 +22,9 @@ public static class MathErrorMessager
 
     public static string TwoOperationInRowMessage(string firstOperation, string secondOperation) =>
         $"{TwoOperationInRow} {firstOperation} and {secondOperation}";
+
+    public static string TwoNumberInRowMessage(string firstNumbers, string secondNumbers) =>
+        $"{TwoNumberInRow} {firstNumbers} and {secondNumbers}";
 
     public static string InvalidOperatorAfterParenthesisMessage(string operation) =>
         $"{InvalidOperatorAfterParenthesis} ({operation}";

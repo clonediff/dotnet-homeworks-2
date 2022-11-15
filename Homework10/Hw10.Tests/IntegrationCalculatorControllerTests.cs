@@ -16,15 +16,17 @@ public class IntegrationCalculatorControllerTests : IClassFixture<TestApplicatio
 	{
 		_client = fixture.CreateClient();
 	}
-	
-	[Theory]
-	[InlineData("10", "10")]
-	[InlineData("2 + 3", "5")]
-	[InlineData("(10 - 3) * 2", "14")]
-	[InlineData("3 - 4 / 2", "1")]
-	[InlineData("8 * (2 + 2) - 3 * 4", "20")]
-	[InlineData("10 - 3 * (-4)", "22")]
-	public async Task Calculate_CalculateExpression_Success(string expression, string result)
+
+    [Theory]
+    [InlineData("10", "10")]
+    [InlineData("2 + 3", "5")]
+    [InlineData("(10 - 3) * 2", "14")]
+    [InlineData("3 - 4 / 2", "1")]
+    [InlineData("8 * (2 + 2) - 3 * 4", "20")]
+    [InlineData("8 * (-2 + 2) - 3 * 4", "-12")]
+    [InlineData("10 - 3 * (-4)", "22")]
+    [InlineData("-10 - 3 * (-4)", "2")]
+    public async Task Calculate_CalculateExpression_Success(string expression, string result)
 	{
 		var response = await CalculateAsync(expression);
 		Assert.True(response!.IsSuccess);

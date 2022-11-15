@@ -1,6 +1,6 @@
 using Hw10.Dto;
 
-namespace Hw10.Services;
+namespace Hw10.Services.Interfaces;
 
 public interface IMathCalculatorService
 {
