@@ -1,5 +1,6 @@
 ﻿using Hw11.ErrorMessages;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Hw11.Services.MathCalculator
@@ -14,6 +15,7 @@ namespace Hw11.Services.MathCalculator
             [ExpressionType.Divide] = (x, y) => x / y,
         };
 
+        [ExcludeFromCodeCoverage]
         public async Task<double> CalculateAsync(Expression expression)
         {
             var executeBefore = await new CalculatorExpressionVisitor(expression)
@@ -47,6 +49,7 @@ namespace Hw11.Services.MathCalculator
         async Task<double> Eval(Dictionary<Expression, Lazy<Task<double>>> lazy, ConstantExpression constExpr)
             => (double)constExpr.Value!;
 
+        [ExcludeFromCodeCoverage]
         private class CalculatorExpressionVisitor
         {
             private readonly Expression root;
