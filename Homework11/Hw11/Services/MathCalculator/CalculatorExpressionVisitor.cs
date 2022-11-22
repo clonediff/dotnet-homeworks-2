@@ -1,16 +1,14 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Hw11.Services.MathCalculator.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Hw11.Services.MathCalculator
 {
 
     [ExcludeFromCodeCoverage]
-    public class CalculatorExpressionVisitor
+    public class CalculatorExpressionVisitor : ICalculatorExpressionVisitor
     {
-        private readonly Expression root;
         private readonly Dictionary<Expression, Expression[]> executeBefore = new();
-
-        public CalculatorExpressionVisitor(Expression root) => this.root = root;
 
         async Task VisitAsync(BinaryExpression binary)
         {
@@ -24,7 +22,7 @@ namespace Hw11.Services.MathCalculator
             executeBefore[expression] = Array.Empty<Expression>();
         }
 
-        public async Task<Dictionary<Expression, Expression[]>> GetExecuteBeforeDictAsync()
+        public async Task<Dictionary<Expression, Expression[]>> GetExecuteBeforeDictAsync(Expression root)
         {
             await VisitAsync((dynamic)root);
 
