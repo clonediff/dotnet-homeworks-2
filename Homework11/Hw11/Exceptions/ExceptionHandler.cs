@@ -4,10 +4,10 @@ namespace Hw11.Exceptions;
 
 public class ExceptionHandler : IExceptionHandler
 {
-	private const string UnknownError = "Unknown error";
-	private const string InvalidNumber = "Invalid number";
-	private const string InvalidSyntax = "Invalid syntax";
-	private const string InvalidSymbol = "Invalid symbol";
+	public const string UnknownError = "Unknown error";
+	public const string InvalidNumber = "Invalid number";
+	public const string InvalidSyntax = "Invalid syntax";
+	public const string InvalidSymbol = "Invalid symbol";
 	
 	private readonly ILogger<ExceptionHandler> _logger;
 
