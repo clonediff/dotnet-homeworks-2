@@ -1,4 +1,5 @@
 ﻿using Hw11.ErrorMessages;
+using System.Collections.Concurrent;
 using System.Linq.Expressions;
 
 namespace Hw11.Services.MathCalculator
@@ -24,16 +25,12 @@ namespace Hw11.Services.MathCalculator
                 lazy[root] = new Lazy<Task<double>>(async () =>
                 {
                     if (before.Any())
-                    {
                         await Task.WhenAll(before.Select(b => lazy[b].Value));
-                        await Task.Yield();
-                    }
 
                     return await Eval(lazy, (dynamic)root);
                 });
 
-            var x = await lazy[mainExpression].Value;
-            return x;
+            return await lazy[mainExpression].Value;
         }
 
         async Task<double> Eval(Dictionary<Expression, Lazy<Task<double>>> lazy, BinaryExpression be)
@@ -53,14 +50,14 @@ namespace Hw11.Services.MathCalculator
         private class CalculatorExpressionVisitor
         {
             private readonly Expression root;
-            private readonly Dictionary<Expression, Expression[]> executeBefore = new Dictionary<Expression, Expression[]>();
+            private readonly Dictionary<Expression, Expression[]> executeBefore = new();
 
             public CalculatorExpressionVisitor(Expression root) => this.root = root;
 
             public async Task VisitAsync(BinaryExpression binary)
             {
-                await Task.Run(() => VisitAsync((dynamic)binary.Left));
-                await Task.Run(() => VisitAsync((dynamic)binary.Right));
+                await VisitAsync((dynamic)binary.Left);
+                await VisitAsync((dynamic)binary.Right);
                 executeBefore[binary] = new[] { binary.Left, binary.Right };
             }
 

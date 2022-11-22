@@ -18,7 +18,6 @@ public class MathCalculatorService : IMathCalculatorService
     public async Task<double> CalculateMathExpressionAsync(string? expression)
     {
         var parsedExpression = parser.ParseExpression(expression);
-        var t = await calculator.CalculateAsync(parsedExpression);
-        return t;
+        return await calculator.CalculateAsync(parsedExpression);
     }
 }
