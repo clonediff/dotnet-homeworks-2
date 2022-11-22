@@ -1,9 +1,24 @@
+using Hw11.Exceptions;
+
 namespace Hw11.Services.MathCalculator;
 
 public class MathCalculatorService : IMathCalculatorService
 {
+    IParser parser;
+    ICalculator calculator;
+    IExceptionHandler exceptionHandler;
+
+    public MathCalculatorService(IParser parser, ICalculator calculator, IExceptionHandler exceptionHandler)
+    {
+        this.parser = parser;
+        this.calculator = calculator;
+        this.exceptionHandler = exceptionHandler;
+    }
+
     public async Task<double> CalculateMathExpressionAsync(string? expression)
     {
-        throw new NotImplementedException();
+        var parsedExpression = parser.ParseExpression(expression);
+        var t = await calculator.CalculateAsync(parsedExpression);
+        return t;
     }
 }
